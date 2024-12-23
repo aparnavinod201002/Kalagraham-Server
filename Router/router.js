@@ -57,5 +57,7 @@ router.post('/CategoryReg',CategoryController.CategoryReg)
  router.delete('/videoGallary/DeleteVideoGallary/:videogallaryId',VideoGallaryController.deleteVideoGallary);
  router.delete('/request/DeleteRequest/:requestId',requestController.deleteRequest);
  router.post('/forgotpassword',RegisterController.forgotpassword)
+ router.put('/editimage',multerConfig.single('image'),ImageGallaryController.editImage)
+ 
  
 module.exports = router
