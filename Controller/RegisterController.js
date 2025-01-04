@@ -108,5 +108,29 @@ exports.forgotpassword = async (req, res) => {
 };
 
 
+exports.getuserByEmail = async(req,res)=>{
+console.log("inside loginemail");
+
+    const {email}= req.params
+    console.log(email);
+    
+    try{
+        const existingUser = await users.findOne({email})
+if(existingUser){
+    const token = jwt.sign({userId:existingUser._id},process.env.jwt_secret)
+    res.status(200).json({existingUser,token})
+    console.log(token);
+    
+}else{
+    res.status(406).json("Invalid Email/Password")
+}
+    }
+    catch(err){
+        res.status(401).json(err)
+    }
+
+    
+}
+
 
 

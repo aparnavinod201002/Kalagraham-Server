@@ -12,6 +12,7 @@ const multerConfig = require('../MiddleWare/multerMiddleware')
 const VideoGallaryController = require('../Controller/VideoGallaryController')
 const BookingController = require('../Controller/BookingController')
 const PaymentController = require('../Controller/PaymentController')
+const TestimonyController = require('../Controller/TestimonyController')
 
 //register
 
@@ -59,5 +60,13 @@ router.post('/CategoryReg',CategoryController.CategoryReg)
  router.post('/forgotpassword',RegisterController.forgotpassword)
  router.put('/editimage',multerConfig.single('image'),ImageGallaryController.editImage)
  
+ router.get('/loginemail/:email',RegisterController.getuserByEmail);
+ router.get('/totalIncome',PaymentController.getTotalIncome);
+ router.get('/morecarnival',BookingController.getMoreCarnival);
+ 
+ router.get('/mostparticipation',requestController.getMostRequested);
+ router.post('/testimony',TestimonyController.TestimonyReg)
+ router.get('/gettestimony',TestimonyController.TestimonyGet)
+
  
 module.exports = router

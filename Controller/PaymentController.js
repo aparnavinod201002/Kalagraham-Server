@@ -72,3 +72,32 @@ exports.getPaymentByByookingId = async (req, res) => {
   }
 };
 
+exports.getTotalIncome = async (req, res) => {
+  
+  
+  try {
+    // Use aggregation to sum up the payment amounts
+    const totalIncome = await Payment.aggregate([
+      {
+        $group: {
+          _id: null,  // Group all documents together
+          totalAmount: { $sum: "$totalAmount" }  // Sum the 'amount' field
+        }
+      }
+    ]);
+
+
+   // Check if there is any result and send it
+   if (totalIncome.length > 0) {
+    res.status(200).json({ totalIncome: totalIncome[0].totalAmount });  // Send the totalAmount field
+  } else {
+    res.status(200).json({ totalIncome: 0 });
+  }
+} catch (err) {
+  res.status(401).json({ error: err.message });
+}
+};
+
+
+
+

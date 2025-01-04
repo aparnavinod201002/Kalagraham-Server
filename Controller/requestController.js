@@ -111,4 +111,35 @@ exports.deleteRequest = async(req,res)=>{
   }
 }
   
+
+
+exports.getMostRequested = async (req, res) => {
+  console.log("inside request");
   
+  try {
+    const mostRequested = await request.aggregate([
+      {
+        $group: {
+          _id: "$carnivalName", // Group by carnivalName
+          totalRequests: { $sum: 1 }, // Count total requests
+        },
+      },
+      { $sort: { totalRequests: -1 } }, // Sort by total requests in descending order
+      { $limit: 1 }, // Get the most requested carnival
+    ]);
+    console.log(mostRequested);
+    if (mostRequested.length > 0) {
+      res.status(200).json({
+        carnivalName: mostRequested[0]._id,
+        totalRequests: mostRequested[0].totalRequests
+        
+      });
+     
+      
+    } else {
+      res.status(404).json({ message: "No carnival participation found." });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -69,3 +69,23 @@ exports.deleteBooking = async(req,res)=>{
         res.status(401).json(err)
     }
 }
+
+exports.getMoreCarnival = async (req, res) => {
+    try {
+      // Find the carnival event with the most ticket bookings (by ticket_count)
+      const mostBookedCarnival = await Booking
+        .find() // Find all carnival events
+        .sort({ ticket_count: -1 }) // Sort by ticket_count in descending order
+        .limit(1); // Limit to the top 1 most booked carnival
+        console.log(mostBookedCarnival);
+      if (mostBookedCarnival.length > 0) {
+        res.status(200).json({ carnivalId: mostBookedCarnival[0].carnival_id }); // Return the carnival ID
+        
+        
+      } else {
+        res.status(404).json({ message: 'No carnival events found' }); // If no carnivals found
+      }
+    } catch (err) {
+      res.status(401).json({ error: err.message });
+    }
+  };
